@@ -26,6 +26,23 @@ func (n *Node) String() string {
 	return b.String()
 }
 
+// Equal determines if the provided node is equal to the current.
+func (n *Node) Equal(node *Node) bool {
+	switch {
+	case n == nil && node == nil:
+		return true
+	case n == nil || node == nil:
+		return false
+	case n.value != node.value:
+		return false
+	}
+
+	left := n.left.Equal(node.left)
+	right := n.right.Equal(node.right)
+
+	return left && right
+}
+
 // Tree represents a Binary Search Tree.
 type Tree struct {
 	root *Node
@@ -75,24 +92,8 @@ func (t *Tree) Add(value int) bool {
 // Remove a node from the tree.
 // Returns true when the node could be deleted.
 func (t *Tree) Remove(value int) bool {
-	// TODO:
+
 	return false
-}
-
-func nodeEqual(n1, n2 *Node) bool {
-	switch {
-	case n1 == nil && n2 == nil:
-		return true
-	case n1 == nil || n2 == nil:
-		return false
-	case n1.value != n2.value:
-		return false
-	}
-
-	left := nodeEqual(n1.left, n2.left)
-	right := nodeEqual(n1.right, n2.right)
-
-	return left && right
 }
 
 // Equal returns true if the structure matches the provided tree.
@@ -105,5 +106,5 @@ func (t *Tree) Equal(tree *Tree) bool {
 		return false
 	}
 
-	return nodeEqual(t.root, tree.root)
+	return t.root.Equal(tree.root)
 }
